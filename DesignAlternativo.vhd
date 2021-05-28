@@ -2,6 +2,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use IEEE.numeric_std.all;
 use ieee.std_logic_unsigned.all;
+--alteracao
 
 entity main is port(
 A: in std_logic_vector(3 downto 0) ;
@@ -11,6 +12,8 @@ Reset: in std_logic;
 Output: out std_logic_vector(7 downto 0)
 );
 end main;
+
+
 
 architecture funcionamento of main is
 
@@ -31,8 +34,7 @@ signal rst: std_logic;
 --clock
 signal clk: std_logic;
 
---declaracao do periodo de clock
-constant PERIODO : time := 10 ns;
+
 
 
 
@@ -54,12 +56,11 @@ variable final: integer range 0 to 7;
 
 begin
 
---produzindo o sinal de clock
-Clk <= not Clk after PERIODO/2;
 
 
 aa <= A;
 bb <= B;
+q1 <= '0';
 
 
 palavra(0) <= aa(0);
@@ -71,7 +72,7 @@ palavra(5) <= bb(1);
 palavra(6) <= bb(2);
 palavra(7) <= bb(3);
 
-report "palavra total: " & integer'image(to_integer(unsigned(palavra)));
+
 
 
 

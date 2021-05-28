@@ -17,27 +17,7 @@ end main;
 
 architecture funcionamento of main is
 
---palavra sobre a qual se farao operacoes
-signal palavra: std_logic_vector(7 downto 0);
-
---bit extra para o algoritmo de booth
-signal q1: std_logic;
-
---sinais que representam os vetores
-signal aa: std_logic_vector(3 downto 0);
-signal bb: std_logic_vector(3 downto 0);
-
---start e reset
-signal stt: std_logic;
-signal rst: std_logic;
-
---clock
-signal clk: std_logic;
-
-
-
-
-
+--palavra sobre a qual se farao operacoe
 --sinal entra
 --é armazenado
 --se julga o que tem que ser feito
@@ -45,37 +25,41 @@ signal clk: std_logic;
 --repete o processo
 --apos 4 iteracoes o output eh dado
 begin
-process(A, B, Start, Reset, Output)
+process(A, B, Start, Reset)
 
 
 --variavel para contar iteracoes
-variable ite: integer :=0;
-variable final: integer range 0 to 7;
 
-
+variable boothA: std_logic_vector(9 downto 0);
+variable boothS: std_logic_vector(9 downto 0);
+variable boothP: std_logic_vector(9 downto 0);
 
 begin
 
 
+    
+boothA := A(3) & A & "00000"; 
+boothS := (not(A(3) & A) + 1) & "00000"; 
+boothP := "00000" & B & '0';
 
-aa <= A;
-bb <= B;
-q1 <= '0';
+for i in 0 to 3 loop
 
+    if(boothP(1 downto 0) = "01") then
+        boothP := boothP + boothA;
+    elsif (boothP(1 downto 0) = "10") then
+        boothP := boothP + boothS;        
+    end if;
 
-palavra(0) <= aa(0);
-palavra(1) <= aa(1);
-palavra(2) <= aa(2);
-palavra(3) <= aa(3);
-palavra(4) <= bb(0);
-palavra(5) <= bb(1);
-palavra(6) <= bb(2);
-palavra(7) <= bb(3);
+    boothP := boothP(9) & boothP(9 downto 1);
+
+end loop;
 
 
 
 
+Output <= boothP(8 downto 1);
 
 
 end process;
+
 end funcionamento;
